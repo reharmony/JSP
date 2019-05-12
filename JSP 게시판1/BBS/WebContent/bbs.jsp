@@ -1,19 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %> <!-- 라이브러리 import -->
+<%@ page import="bbs.BbsDAO" %> <!-- 파일 import -->
+<%@ page import="bbs.Bbs" %> <!-- 파일 import -->
+<%@ page import="java.util.ArrayList" %> <!-- 게시판 목록을 출력하기 위해 필요함 -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewprt" content="width=device-width", initial-scale="1"> 
+<meta name="viewprt" content="width=device-width" initial-scale="1"> 
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>JSP 게시판 웹사이트</title>
+<style type="text/css"> 
+	a, a:hover { /* 하이퍼텍스트 글자, 거기에 마우스 올렸을 때 */
+		color: #000000; /* 글자색 검은색 */
+		text-decoration: none; /* 효과 없음 (밑줄 제거) */
+	}
+	
+	td a:visited { /* 이미 본 게시글 */
+		color: #999; /* 색상 변경 */
+		text-decoration: none; /* 밑줄 제거 */
+	}
+</style>
 </head>
 <body>
 	<% // html 안에 java구문 사용할때 쓰는건가?
 		String userID = null;
 		if (session.getAttribute("userID") != null) { // 로그인 중일 경우 
 			userID = (String) session.getAttribute("userID"); // userID라는 변수에 로그인 중인 아이디 할당
+		}
+		int pageNumber = 1; // 기본 페이지 번호 1
+		if (request.getParameter("pageNumber") != null) { // 페이지 번호  값이 존재할 경우(2페이지 이상으로 넘어갔을 경우)
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber")); // 그 값을 정수형으로 가져와서 pageNumber 변수에 할당
 		}
 	%>
 	<nav class="navbar navbar-default">
@@ -78,18 +96,38 @@
 					</tr>
 				</thead> 				
 				<tbody> <!-- 테이블 몸체 속성 설정 -->
+					<% /* 게시판 글 목록에 실제 출력될 내용 */
+						BbsDAO bbsDAO = new BbsDAO();
+						ArrayList<Bbs> list = bbsDAO.getList(pageNumber); /* 현재 페이지 번호에 해당하는 게시글 목록 가져오기 */
+						for(int i = 0; i < list.size(); i++) { /* for문으로 게시글 하나씩 표시 */
+					%>
 					<tr>
-						<td>1</td> <!-- 예시 데이터 -->					 
-						<td>안녕하세요</td> <!-- 예시 데이터 -->
-						<td>로다주</td> <!-- 예시 데이터 -->
-						<td>2019-05-08</td> <!-- 예시 데이터 -->
+						<td><%= list.get(i).getBbsID() %></td> <!-- 게시글 번호 -->					 
+						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td> <!-- 게시글제목 (하이퍼링크) -->
+						<td><%= list.get(i).getUserID() %></td> <!-- 작성자 아이디 -->
+						<!-- 작성 일시: 날짜 표시 형식 YYYY-MM-DD HH시 MM분 -->
+						<td><%= list.get(i).getBbsDate().substring(0,11) + list.get(i).getBbsDate().substring(11,13) + "시 " + list.get(i).getBbsDate().substring(14,16) + "분" %></td> 
 					</tr>
+					<%
+						}
+					%>
 				</tbody>
 			</table>	
+			<% 
+				if(pageNumber != 1) { // 현재 페이지가 1페이지가 아니라면	
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber - 1 %>" class="btn btn-success btn-arraw-left">이전</a> <!--이전 버튼 생성  -->
+			<%
+				} if(bbsDAO.nextPage(pageNumber +1)) { // 다음 페이지가 존재한다면
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber + 1 %>" class="btn btn-success btn-arraw-left">다음</a> <!--다음 버튼 생성  -->
+			<%
+				}
+			%>
 			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a> <!-- 버튼 오른쪽 고정 -->
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="js/bootstrap.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- 제이쿼리 폼-->
+	<script src="js/bootstrap.js"></script> <!-- 부트스트랩 폼-->
 </body>
 </html>

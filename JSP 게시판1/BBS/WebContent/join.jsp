@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewprt" content="width=device-width", initial-scale="1"> 
+<meta name="viewprt" content="width=device-width" initial-scale="1"> 
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>JSP 게시판 웹사이트</title>
 </head>
@@ -53,7 +53,7 @@
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="이름" name="userName" maxlength="20">
 					</div>
-					<div class="form-group", style="text-align: center;">
+					<div class="form-group" style="text-align: center;">
 						<div class="btn-group" data-toggle="buttons"></div>
 							<label class="btn btn-primary active">
 								<input type="radio" name="userGender" autocomplete="off" value="남자" checked>남자
