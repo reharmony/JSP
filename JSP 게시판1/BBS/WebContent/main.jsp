@@ -6,11 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewprt" content="width=device-width" initial-scale="1"> 
-<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/bootstrap.css"> <!-- 부트스트랩 css 설정파일 참조 -->
+<link rel="stylesheet" href="css/custom.css"> <!-- 커스텀 css 설정파일 참조  -->
+<link rel="stylesheet" href="css/custom.css"> <!-- 커스텀 css 설정파일 참조  -->
 <title>JSP 게시판 웹사이트</title>
 </head>
 <body>
-	<% // html 안에 java구문 사용할때 쓰는건가?
+	<% // html 안에 jsp구문 사용할때 <% 사용
 		String userID = null;
 		if (session.getAttribute("userID") != null) { // 로그인 중일 경우 
 			userID = (String) session.getAttribute("userID"); // userID라는 변수에 로그인 중인 아이디 할당
@@ -64,6 +66,42 @@
 			%>
 		</div>
 	</nav>
+	<div class="container">
+		<div class="jumbotron"> <!-- 부트스트랩에서 웹사이트 소개 페이지 구성할 때 쓰는 요소 -->
+			<h1>웹 사이트 소개</h1>
+			<p> 대충 웹사이트를 소개한다는 내용 </p>
+			<p> <a class="btn btn-primary btn-pull" href="소개페이지 링크" role="button">자세히 알아보기</a></p>
+		</div>
+	</div>
+	<div class="containter">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel"> <!-- 슬라이드 형태로 구현 -->
+			<ol class="carousel-indicators"> <!-- 중앙 하단에 보이는 동그라미를 리스트 형태로 배치 -->
+				<!-- data-slide-to: 슬라이드 순서 , active: 현재 보이는 이미지라는 표시-->
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner" align="center"> <!-- 이미지 실제로 배치하는 영역 -->
+				<div class="item active"> <!-- item active 이미지만 표시됨 -->
+					<img src="images/1.jpg">
+				</div>
+				<div class="item">
+					<img src="images/2.jpg">
+				</div>
+				<div class="item">
+					<img src="images/3.jpg">
+				</div>
+			</div>
+			<!-- 이전 이미지 버튼 -->
+			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span> <!-- 왼쪽에 배치 -->
+			</a>
+			<!-- 다음 이미지 버튼 -->
+			<a class="right carousel-control" href="#myCarousel" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span> <!-- 오른쪽에 배치 -->
+			</a>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>
